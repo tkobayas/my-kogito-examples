@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.kie.kogito.quickstart;
+package org.drools.example;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +47,7 @@ public class Result {
 
     @Override
     public String toString() {
-        return value.toString();
+        return value == null ? "null" : value.toString();
     }
 
     @Override
