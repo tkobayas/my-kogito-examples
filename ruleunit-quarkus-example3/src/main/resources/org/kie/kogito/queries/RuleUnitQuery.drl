@@ -1,0 +1,45 @@
+package org.kie.kogito.queries;
+unit LoanUnit;
+
+import org.kie.kogito.queries.LoanApplication
+import org.kie.kogito.queries.Applicant
+
+rule CheckAdult when
+    $a: /applicants[ age >= adultAge ]
+then
+    System.out.println("CheckAdult");
+    modify($a) { $a.setAdult(true) };
+end
+
+rule CheckNotAdult when
+    $a: /applicants[ age < adultAge ]
+then
+    System.out.println("CheckNotAdult");
+    modify($a) { $a.setAdult(false) };
+end
+
+rule AdultApplication when
+    $l: /loanApplications[ amount <= 5000 ]
+    $a: /applicants[ adult == true ]
+then
+    System.out.println("AdultApplication");
+    modify($l) { $l.setApproved(true) };
+end
+
+rule NotAdultApplication when
+    $l: /loanApplications[ amount <= 2000 ]
+    $a: /applicants[ adult == false ]
+then
+    System.out.println("NotAdultApplication");
+    modify($l) { $l.setApproved(true) };
+end
+
+
+query FindApproved
+    $l: /loanApplications[ approved ]
+end
+
+query FindNotApprovedIdAndAmount
+    /loanApplications[ !approved, $id: id, $amount : amount ]
+end
+
