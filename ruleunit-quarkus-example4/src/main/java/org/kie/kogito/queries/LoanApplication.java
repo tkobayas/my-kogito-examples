@@ -18,6 +18,13 @@ public class LoanApplication implements Serializable {
 
     public LoanApplication() {}
 
+    public LoanApplication(String id, Applicant applicant, int amount, int deposit) {
+        this.id = id;
+        this.applicant = applicant;
+        this.amount = amount;
+        this.deposit = deposit;
+    }
+
     public String getId() {
         return id;
     }

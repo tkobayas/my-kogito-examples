@@ -16,69 +16,69 @@
 package org.kie.kogito;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
-//import org.kie.kogito.queries.AdultUnitDTO;
-//import org.kie.kogito.queries.AdultUnitQueryFindAdultsEndpoint;
-//import org.kie.kogito.queries.AdultUnitQueryFindAdultNamesEndpoint;
-//import org.kie.kogito.queries.AdultUnitQueryFindNotAdultNamesAndAgeEndpoint;
-//import org.kie.kogito.queries.AdultUnitRuleUnit;
 import org.kie.kogito.queries.Applicant;
+import org.kie.kogito.queries.LoanApplication;
+import org.kie.kogito.queries.LoanUnitDTO;
+import org.kie.kogito.queries.LoanUnitQueryFindApprovedEndpoint;
+import org.kie.kogito.queries.LoanUnitQueryFindNotApprovedIdAndAmountEndpoint;
+import org.kie.kogito.queries.LoanUnitRuleUnit;
 
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class QueryTest {
 
-//    @Test
-//    public void testPersons() {
-//        AdultUnitQueryFindAdultsEndpoint query = new AdultUnitQueryFindAdultsEndpoint(new AdultUnitRuleUnit());
-//
-//        List<String> results = query.executeQuery( createAdultUnitDTO() )
-//                .stream()
-//                .map( Person::getName )
-//                .collect( toList() );
-//
-//        assertEquals( 2, results.size() );
-//        assertTrue( results.containsAll( asList("Mario", "Marilena") ) );
-//    }
-//
-//    @Test
-//    public void testNames() {
-//        AdultUnitQueryFindAdultNamesEndpoint query = new AdultUnitQueryFindAdultNamesEndpoint(new AdultUnitRuleUnit());
-//
-//        List<String> results = query.executeQuery( createAdultUnitDTO() );
-//
-//        assertEquals( 2, results.size() );
-//        assertTrue( results.containsAll( asList("Mario", "Marilena") ) );
-//    }
-//
-//    @Test
-//    public void testResult() {
-//        AdultUnitQueryFindNotAdultNamesAndAgeEndpoint query = new AdultUnitQueryFindNotAdultNamesAndAgeEndpoint(new AdultUnitRuleUnit());
-//
-//        List<AdultUnitQueryFindNotAdultNamesAndAgeEndpoint.Result> results = query.executeQuery( createAdultUnitDTO() );
-//
-//        assertEquals( 1, results.size() );
-//        AdultUnitQueryFindNotAdultNamesAndAgeEndpoint.Result result = results.get(0);
-//        assertEquals( "Sofia", result.get$name() );
-//        assertEquals( 7, result.get$age() );
-//    }
-//
-//    private AdultUnitDTO createAdultUnitDTO() {
-//        List<Person> persons = new ArrayList<>();
-//        persons.add( new Person( "Mario", 45 ) );
-//        persons.add( new Person( "Marilena", 47 ) );
-//        persons.add( new Person( "Sofia", 7 ) );
-//
-//        AdultUnitDTO adultsDTO = new AdultUnitDTO();
-//        adultsDTO.setAdultAge(18);
-//        adultsDTO.setPersons(persons);
-//
-//        return adultsDTO;
-//    }
+    @Test
+    public void testApproved() {
+        LoanUnitQueryFindApprovedEndpoint query = new LoanUnitQueryFindApprovedEndpoint(new LoanUnitRuleUnit());
+
+        List<String> results = query.executeQuery(createLoanUnitDTO())
+                                    .stream()
+                                    .map(LoanApplication::getId)
+                                    .collect(toList());
+
+        assertEquals(2, results.size());
+        assertTrue(results.containsAll(asList("ABC0001", "ABC0005")));
+    }
+
+    @Test
+    public void testNotApproved() {
+        LoanUnitQueryFindNotApprovedIdAndAmountEndpoint query = new LoanUnitQueryFindNotApprovedIdAndAmountEndpoint(new LoanUnitRuleUnit());
+
+        List<LoanUnitQueryFindNotApprovedIdAndAmountEndpoint.Result> results = query.executeQuery(createLoanUnitDTO());
+
+        assertEquals(3, results.size());
+
+        Collections.sort(results, (r1, r2) -> r1.get$id().compareTo(r2.get$id()));
+
+        assertEquals("ABC0002", results.get(0).get$id());
+        assertEquals(1500, results.get(0).get$amount());
+
+        assertEquals("ABC0003", results.get(1).get$id());
+        assertEquals(4000, results.get(1).get$amount());
+
+        assertEquals("ABC0004", results.get(2).get$id());
+        assertEquals(8000, results.get(2).get$amount());
+    }
+
+    private LoanUnitDTO createLoanUnitDTO() {
+        List<LoanApplication> loanApplications = new ArrayList<>();
+        loanApplications.add(new LoanApplication("ABC0001", new Applicant("John", 45), 3000, 1200)); // approved with LargeDepositApprove
+        loanApplications.add(new LoanApplication("ABC0002", new Applicant("Paul", 15), 1500, 500)); // rejected with NotAdultApplication
+        loanApplications.add(new LoanApplication("ABC0003", new Applicant("Mary", 28), 4000, 300)); // rejected with SmallDepositReject
+        loanApplications.add(new LoanApplication("ABC0004", new Applicant("George", 35), 8000, 3000)); // rejected with LargeDepositReject
+        loanApplications.add(new LoanApplication("ABC0005", new Applicant("Lucy", 22), 1600, 200)); // approved with SmallDepositApprove
+
+        LoanUnitDTO loanUnitDto = new LoanUnitDTO();
+        loanUnitDto.setMaxAmount(5000);
+        loanUnitDto.setLoanApplications(loanApplications);
+
+        return loanUnitDto;
+    }
 }
