@@ -1,0 +1,18 @@
+package org.kie.kogito.examples;
+unit Hello;
+
+import java.util.ArrayList;
+import java.util.List;
+
+rule helloWorld
+when
+    $m: /messages[ this == "hello" ]
+then
+    resultList.add($m + ", world");
+    System.out.println("resultList = " + resultList);
+end
+
+// Cannot generate REST endpoint for global 
+//query hello
+//  $r : /resultList
+//end
