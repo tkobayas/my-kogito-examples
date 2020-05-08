@@ -15,6 +15,7 @@
  */
 package org.kie.kogito.examples;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kie.kogito.rules.DataSource;
@@ -24,7 +25,7 @@ import org.kie.kogito.rules.RuleUnitData;
 public class Hello implements RuleUnitData {
 	DataStore<String> messages = DataSource.createStore();
 
-	List<String> resultList;
+	List<String> resultList = new ArrayList<>();
 
 	public DataStore<String> getMessages() {
 		return messages;
