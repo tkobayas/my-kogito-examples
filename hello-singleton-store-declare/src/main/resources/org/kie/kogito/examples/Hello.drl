@@ -1,0 +1,25 @@
+package org.kie.kogito.examples;
+unit Hello;
+
+
+import org.kie.kogito.rules.DataSource;
+import org.kie.kogito.rules.DataStore;
+import org.kie.kogito.rules.RuleUnitData;
+import org.kie.kogito.rules.SingletonStore;
+
+declare Hello extends RuleUnitData
+  result : SingletonStore<Result> = DataSource.createSingleton()
+  messages : DataStore<String>
+end
+
+rule helloWorld
+when
+    $r : /result
+    $m : /messages
+then
+    $r.setValue($m + " world");
+end
+
+query hello
+  $r : /result
+end
