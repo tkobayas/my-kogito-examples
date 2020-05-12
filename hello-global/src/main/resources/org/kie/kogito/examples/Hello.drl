@@ -1,18 +1,21 @@
 package org.kie.kogito.examples;
 unit Hello;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.kie.kogito.rules.DataStore;
+import org.kie.kogito.rules.RuleUnitData;
 
-rule helloWorld
-when
-    $m: /messages[ this == "hello" ]
-then
-    resultList.add($m + ", world");
-    System.out.println("resultList = " + resultList);
+declare Hello extends RuleUnitData
+  result : Result = new Result()
+  persons : DataStore<Person>
 end
 
-// Cannot generate REST endpoint for global 
-//query hello
-//  $r : /resultList
-//end
+rule "older than 18"
+when
+    $p : /persons[age > 18]
+then
+    result.addAdultPersonName("Hello, " + $p.getName());
+end
+
+query hello
+    $r : Result() from result
+end

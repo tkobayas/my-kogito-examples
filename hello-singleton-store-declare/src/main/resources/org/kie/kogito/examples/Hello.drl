@@ -1,7 +1,6 @@
 package org.kie.kogito.examples;
 unit Hello;
 
-
 import org.kie.kogito.rules.DataSource;
 import org.kie.kogito.rules.DataStore;
 import org.kie.kogito.rules.RuleUnitData;
