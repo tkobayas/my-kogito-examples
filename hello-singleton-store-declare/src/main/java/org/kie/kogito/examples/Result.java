@@ -1,15 +1,21 @@
 package org.kie.kogito.examples;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Result {
 
-	private String value;
+    private List<String> adultPersonNameList = new ArrayList<>();
 
-	public String getValue() {
-		return value;
-	}
+    public List<String> getAdultPersonNameList() {
+        return adultPersonNameList;
+    }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+    public void setAdultPersonNameList(List<String> adultPersonNameList) {
+        this.adultPersonNameList = adultPersonNameList;
+    }
 
+    public void addAdultPersonName(String adultPersonName) {
+        adultPersonNameList.add(adultPersonName);
+    }
 }

@@ -9,15 +9,15 @@ import org.kie.kogito.rules.SingletonStore;
 
 declare Hello extends RuleUnitData
   result : SingletonStore<Result> = DataSource.createSingleton()
-  messages : DataStore<String>
+  persons : DataStore<Person>
 end
 
-rule helloWorld
+rule "older than 18"
 when
     $r : /result
-    $m : /messages
+    $p : /persons[age > 18]
 then
-    $r.setValue($m + " world");
+    $r.addAdultPersonName("Hello, " + $p.getName());
 end
 
 query hello
