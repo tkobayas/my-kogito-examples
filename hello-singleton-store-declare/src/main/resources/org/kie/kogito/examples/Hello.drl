@@ -8,7 +8,7 @@ import org.kie.kogito.rules.SingletonStore;
 
 declare Hello extends RuleUnitData
   result : SingletonStore<Result> = DataSource.createSingleton()
-  persons : DataStore<Person>
+  persons : DataStore<Person> = DataSource.createStore()
 end
 
 rule "older than 18"

@@ -1,12 +1,13 @@
 package org.kie.kogito.examples;
 unit Hello;
 
+import org.kie.kogito.rules.DataSource;
 import org.kie.kogito.rules.DataStore;
 import org.kie.kogito.rules.RuleUnitData;
 
 declare Hello extends RuleUnitData
   result : Result = new Result()
-  persons : DataStore<Person>
+  persons : DataStore<Person> = DataSource.createStore()
 end
 
 rule "older than 18"
