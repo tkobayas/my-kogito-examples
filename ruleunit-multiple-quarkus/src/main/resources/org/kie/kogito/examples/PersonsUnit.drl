@@ -18,7 +18,7 @@ when
     $r: Results() from results
 then
     System.out.println("CheckAdult");
-    UnitUtils.runAdultUnit(drools);
+    UnitUtils.runAdultUnit(drools, persons, results);
 end
 
 

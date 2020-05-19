@@ -11,13 +11,10 @@ import org.kie.kogito.rules.RuleUnits;
 
 public class UnitUtils {
 
-    public static void runAdultUnit(Drools drools) {
+    public static void runAdultUnit(Drools drools, DataStore<Person> persons, Results results) {
         KieRuntime kieRuntime = drools.getRuntime(KieRuntime.class);
         Application app = ((WrappedStatefulKnowledgeSessionForRHS)kieRuntime).getApplication();
         RuleUnits ruleUnits = app.ruleUnits();
-        
-        DataStore<Person> persons = (DataStore<Person>)kieRuntime.getGlobal("persons");
-        Results results = (Results)kieRuntime.getGlobal("results");
 
         RuleUnit<AdultUnit> adultUnit = ruleUnits.create(AdultUnit.class);
         AdultUnit adultData18 = new AdultUnit(persons, 18);
