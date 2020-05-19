@@ -1,0 +1,27 @@
+package org.kie.kogito.examples;
+unit PersonsUnit;
+
+rule Birthday
+    no-loop
+    salience 100
+when
+    $p: Person( $age : age )
+then
+    System.out.println("Birthday : " + $p.getName());
+    modify($p) { setAge($age+1); }
+end
+
+
+rule CheckAdult
+    salience 0
+when
+    $r: Results() from results
+then
+    System.out.println("CheckAdult");
+    UnitUtils.runAdultUnit(drools);
+end
+
+
+query GetResults
+    $r: Results() from results
+end
