@@ -1,0 +1,11 @@
+package org.kie.kogito.examples;
+unit AdultUnit;
+
+rule Adult
+when
+    $p: /persons[ age >= adultAge, $name : name ]
+then
+    results.add($name);
+    System.out.println("results = " + results.getResults());
+end
+

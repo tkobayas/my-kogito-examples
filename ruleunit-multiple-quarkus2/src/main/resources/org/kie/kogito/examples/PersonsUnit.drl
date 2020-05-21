@@ -1,0 +1,36 @@
+package org.kie.kogito.examples;
+unit PersonsUnit;
+
+rule init
+    salience 1000
+when
+    $r: Results() from results
+then
+    System.out.println("init");
+    UnitUtils.setupAdultUnit(drools, persons, results);
+end
+
+rule Birthday
+    no-loop
+    salience 100
+when
+    $p: Person( $age : age )
+then
+    System.out.println("Birthday : " + $p.getName());
+    modify($p) { setAge($age+1); }
+end
+
+
+rule CheckAdult
+    salience 0
+when
+    $r: Results() from results
+then
+    System.out.println("CheckAdult");
+    drools.run("adult18");
+end
+
+
+query GetResults
+    $r: Results() from results
+end

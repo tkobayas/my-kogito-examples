@@ -1,0 +1,43 @@
+package org.kie.kogito.examples;
+
+import java.lang.reflect.Field;
+import java.util.Map;
+
+import org.drools.core.base.WrappedStatefulKnowledgeSessionForRHS;
+import org.drools.model.Drools;
+import org.kie.api.runtime.KieRuntime;
+import org.kie.kogito.Application;
+import org.kie.kogito.rules.DataStore;
+import org.kie.kogito.rules.RuleUnit;
+import org.kie.kogito.rules.RuleUnitInstance;
+import org.kie.kogito.rules.RuleUnits;
+import org.kie.kogito.rules.units.impl.AbstractRuleUnits;
+
+public class UnitUtils {
+
+    public static void setupAdultUnit(Drools drools, DataStore<Person> persons, Results results) {
+        KieRuntime kieRuntime = drools.getRuntime(KieRuntime.class);
+        Application app = ((WrappedStatefulKnowledgeSessionForRHS)kieRuntime).getApplication();
+        RuleUnits ruleUnits = app.ruleUnits();
+        
+//        try {
+//            Field field = AbstractRuleUnits.class.getDeclaredField("unitRegistry");
+//            field.setAccessible(true);
+//            Map unitRegistry = (Map)field.get(ruleUnits);
+//            System.out.println("unitRegistry.size() = " + unitRegistry.size());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        RuleUnitInstance<?> instance = ruleUnits.getRegisteredInstance("adult18");
+//        if (instance != null) {
+//            return; // use cache??
+//        }
+
+        RuleUnit<AdultUnit> adultUnit = ruleUnits.create(AdultUnit.class);
+        AdultUnit adultData18 = new AdultUnit(persons, 18);
+        adultData18.setResults(results);
+
+        adultUnit.createInstance(adultData18, "adult18");
+    }
+}
